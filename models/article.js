@@ -5,14 +5,18 @@ var Schema = mongoose.Schema;
 
 var ArticleSchema = new Schema({
   title: {
-    type: Number
+    type: String,
+    trim: true,
+    required: true
   },
   url: {
-    type: String
+    type: String,
+    trim: true,
+    required: true
   },
   date: {
   	type: Date,
-  	default: Date.now
+    required: true
   }
 });
 

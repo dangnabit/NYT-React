@@ -1,63 +1,90 @@
-// Include Server Dependencies
-var express = require("express");
-var bodyParser = require("body-parser");
+//Depenndencies 
+var express = require('express');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 var logger = require("morgan");
-var mongoose = require("mongoose");
 
+var Article = require('./models/Article.js');
 
-mongoose.Promise = Promise;
-// Require Click schema
-var Article = require("./models/article");
-
-// Create a new express app
+//PORT ENVIORNMENTS
 var app = express();
-// Sets an initial port. We'll use this later in our listener
 var PORT = process.env.PORT || 3000;
 
-// Run Morgan for Logging and setup Body-Parser for app
 app.use(logger("dev"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.text());
-app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
-app.use(express.static("./public"));
+//Set the Public folder ass static
+app.use(express.static('./public'));
 
-// -------------------------------------------------
+//link to MongoDB
+var link = 'mongodb://localhost/NYT-React';
 
-// MongoDB configuration (Change this URL to your own DB)
-mongoose.connect("mongodb://localhost/nyt_react");
+mongoose.Promise = Promise;
+mongoose.connect(link);
 var db = mongoose.connection;
 
-db.on("error", function(err) {
-  console.log("Mongoose Error: ", err);
+db.on('error', function (err) {
+  console.log('Mongoose Error: ', err);
 });
 
-db.once("open", function() {
-  console.log("Mongoose connection successful.");
+db.once('open', function () {
+  console.log('Mongoose connection successful.');
 });
 
-// -------------------------------------------------
+//Get route
+app.get('/api/saved', function(req, res) {
 
-app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/public/index.html");
+  Article.find({}).exec(function(err, doc){
+      if(err){
+        console.log(err);
+        res.send(err);
+      }
+      else {
+        res.send(doc);
+      }
+    })
 });
 
-app.get("/api/saved", function(req, res) {
+//Post route
+app.post('/api/saved', function(req, res){
 
+  var newArticle = new Article(req.body);
+
+  newArticle.save(function(err, doc){
+    if(err){
+      console.log(err);
+      res.send(err);
+    } else {
+      res.send(doc._id);
+    }
+  });
 });
 
-app.post("/api/saved", function(req, res) {
+//Delete route
+app.delete('/api/saved/', function(req, res){
+  // console.log(req.body);
 
+  var url = req.body.url;
+
+  Article.remove({"url": url}).exec(function(err, data){
+    if(err){
+      console.log(err);
+    }
+    else {
+      res.send("Deleted");
+    }
+  });
 });
 
-app.delete("/api/saved", function(req, res) {
-
+//Home route
+app.get('*', function(req, res){
+  res.sendFile('./public/index.html');
 });
 
-// -------------------------------------------------
-
-// Starting our express server
+//APP LISTEN PORT
 app.listen(PORT, function() {
   console.log("App listening on PORT: " + PORT);
 });

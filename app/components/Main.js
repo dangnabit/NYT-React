@@ -1,36 +1,32 @@
-// Include React
-var React = require("react");
-// Including the Link component from React Router to navigate within our application without full page reloads
-var Link = require("react-router").Link;
+//Require React
+var React = require('react');
+var Router = require('react-router')
 
-// Create the Main component
 var Main = React.createClass({
+  render: function(){
 
-  // Here we render the component
-  render: function() {
-
-    return (
-      <div className="container">
-		<div className="jumbotron">
-			<h2><strong>Which Child???</strong></h2>
-			<p><em>A journey through the whimsical world of React Routing</em></p>
-			<hr></hr>
-			<p>
-				<Link to="/Child1"><button className="btn btn-primary btn-lg"> Show Child #1</button></Link>
-				<Link to="/Child2"><button className="btn btn-danger btn-lg"> Show Child #2</button></Link>
-			</p>
-		</div>
-
-		<div className="row">
-			<div className="container">
-            {this.props.children}
+    return(
+      <div className="main-container">
+        <div className="container">
+          <nav className="navbar navbar-default" role="navigation">
+            <div className="container-fluid">
+              <div className="navbar-header">
+                <a className="navbar-brand" href="#">New York Times Article Finder</a>
+              </div>
+            </div>
+          </nav>
+          <div className="jumbotron">
+            <h2 className="text-center"><strong>New York Times Article Finder</strong></h2>
           </div>
-		</div>
-
-	</div>
-    );
+          {this.props.children}
+        </div>
+        <div className="push" style={{height: '40px'}}></div>
+        <div className="footer navbar navbar-default navbar-fixed-bottom align-middle text-default text-center text-muted">
+          <p>&copy; Copyright 2017 Dan Gabel</p>
+        </div>
+      </div>
+    )
   }
 });
 
-// Export the component back for use in other files
 module.exports = Main;

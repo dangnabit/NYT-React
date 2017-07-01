@@ -1,26 +1,24 @@
-var React = require("react");
+//Require React
+var React = require('react');
 
+//Require your router for routes
 var router = require("react-router");
-
 var Route = router.Route;
 
 var Router = router.Router;
 
-var hashHistory = router.hashHistory;
-
 var IndexRoute = router.IndexRoute;
 
-var Main = require("../components/Main.js");
-var Child1 = require("../components/Child1.js");
+var hashHistory = router.hashHistory;
+
+//Bring in all your components 
+var Main = require('../components/Main');
+var Search = require('../components/Search');
 
 module.exports = (
-
   <Router history={hashHistory}>
-    <Route path="/" component={Main}>
-
-      <Route path="" component={}>
-      </Route>
-    </Route>
+  	<Route path='/' component={Main}>
+      <IndexRoute component={Search} />
+  	</Route>
   </Router>
-
 );
