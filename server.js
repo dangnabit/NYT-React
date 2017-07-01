@@ -20,7 +20,7 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 app.use(express.static('./public'));
 
 //link to MongoDB
-var link = 'mongodb://localhost/NYT-React';
+var link = 'mongodb://<dbuser>:<dbpassword>@ds145312.mlab.com:45312/heroku_lz3m2753';
 
 mongoose.Promise = Promise;
 mongoose.connect(link);
