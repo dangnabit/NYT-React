@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var logger = require("morgan");
 
-var Article = require('./models/Article.js');
+var Article = require('./models/article.js');
 
 //PORT ENVIORNMENTS
 var app = express();
